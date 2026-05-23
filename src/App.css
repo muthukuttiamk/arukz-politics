@@ -1,0 +1,6 @@
+/* App.css — intentionally minimal.
+   All documentary styles live in:
+     src/index.css        — global CSS variables & base reset
+     Component files      — inline styles driven by CSS variables
+   This file is kept only to satisfy the Vite template import in main.jsx.
+*/

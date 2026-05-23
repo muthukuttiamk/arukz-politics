@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================================================
+   CSS DESIGN TOKENS — DARK DOCUMENTARY THEME
+   Change these variables to retheme the entire site instantly.
+   ================================================================ */
+:root {
+  /* Background layers */
+  --bg:           #080508;
+  --surface-0:    #110a0b;
+  --surface-1:    #1a0d0f;
+  --surface-2:    #241215;
+  --surface-3:    #2e1819;
+
+  /* Brand */
+  --maroon:       #8d1016;
+  --maroon-hover: #a01820;
+  --maroon-dim:   #5c1a1b;
+  --maroon-deep:  #3d0c0e;
+  --gold:         #ffca00;
+  --gold-dim:     #c8a000;
+  --gold-muted:   #6a5000;
+
+  /* Text */
+  --text:         #ede5e3;
+  --text-muted:   #a08890;
+  --text-dim:     #6a5558;
+
+  /* Borders */
+  --border:       #2d1a1c;
+  --border-light: #3d2425;
+
+  /* Party colours */
+  --bjp:      #ff6600;
+  --dmk:      #cc0000;
+  --aiadmk:   #006400;
+  --tvk:      #ffca00;
+  --it-dept:  #4a90d9;
+  --ed:       #9b59b6;
+  --cbi:      #1abc9c;
+}
+
+/* ================================================================
+   BASE RESET
+   ================================================================ */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background:              var(--bg);
+    color:                   var(--text);
+    font-family:             'Instrument Sans', 'Noto Sans Tamil', sans-serif;
+    overflow-x:              hidden;
+    -webkit-font-smoothing:  antialiased;
+  }
+
+  ::-webkit-scrollbar        { width: 4px; }
+  ::-webkit-scrollbar-track  { background: var(--surface-0); }
+  ::-webkit-scrollbar-thumb  { background: var(--maroon); border-radius: 99px; }
+
+  ::selection {
+    background: rgba(141,16,22,0.4);
+    color:      var(--gold);
+  }
+}
+
+/* ================================================================
+   FONT UTILITIES
+   ================================================================ */
+.font-teko       { font-family: 'Teko',           sans-serif !important; }
+.font-instrument { font-family: 'Instrument Sans', sans-serif !important; }
+.font-tamil      { font-family: 'Noto Sans Tamil', sans-serif !important; }
+
+/* ================================================================
+   GLOBAL CARD / GLASS PATTERNS
+   ================================================================ */
+.dark-card {
+  background:    var(--surface-1);
+  border:        1px solid var(--border);
+  border-radius: 14px;
+  transition:    all 0.25s ease;
+}
+.dark-card:hover {
+  background:    var(--surface-2);
+  border-color:  var(--border-light);
+  box-shadow:    0 8px 40px rgba(141,16,22,0.2);
+}
+
+.glass-dark {
+  background:          rgba(17,10,11,0.85);
+  backdrop-filter:     blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom:       1px solid var(--border);
+}
+
+/* ================================================================
+   TREE EXPLORER SVG CONNECTOR LINES
+   ================================================================ */
+.tree-line {
+  stroke:       var(--maroon-dim);
+  stroke-width: 1.5;
+  fill:         none;
+  stroke-dasharray: 4 3;
+}
+.tree-line.active {
+  stroke:       var(--gold);
+  stroke-dasharray: none;
+}
+
+/* ================================================================
+   SCROLLBAR NONE UTILITY
+   ================================================================ */
+.scrollbar-none {
+  scrollbar-width:    none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ================================================================
+   PRINT OVERRIDES
+   ================================================================ */
+@media print {
+  header, .quick-nav, [class*="ticker"], [class*="FilterBar"] {
+    display: none !important;
+  }
+  body { background: white !important; color: #111 !important; }
+}
