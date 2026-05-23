@@ -37,6 +37,7 @@ import Footer      from "./components/layout/Footer";
 import Hero         from "./components/hero/Hero";
 import BJPNarrative from "./components/narrative/BJPNarrative";
 import TreeExplorer from "./components/treemap/TreeExplorer";
+import MindMap     from "./components/treemap/MindMap";
 
 /* ── Filter + Timeline ───────────────────────────────── */
 import FilterBar from "./components/filters/FilterBar";
@@ -97,6 +98,12 @@ export default function App() {
       <BJPNarrative events={events} />
 
       <TreeExplorer
+        allEvents={events}
+        allSeasons={seasons}
+        onEventClick={setDrawerEvent}
+      />
+
+      <MindMap
         allEvents={events}
         allSeasons={seasons}
         onEventClick={setDrawerEvent}
