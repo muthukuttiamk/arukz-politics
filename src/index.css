@@ -130,3 +130,24 @@
   }
   body { background: white !important; color: #111 !important; }
 }
+
+/* ================================================================
+   REACT FLOW DARK THEME OVERRIDES
+   ================================================================ */
+.react-flow__background { background: var(--surface-0) !important; }
+.react-flow__minimap   { border-radius: 8px; overflow: hidden; }
+.react-flow__controls  { box-shadow: none !important; }
+.react-flow__controls-button {
+  background: #1a0d0f !important;
+  border-color: #2d1a1c !important;
+  color: #a08890 !important;
+  fill: #a08890 !important;
+}
+.react-flow__controls-button:hover {
+  background: rgba(141,16,22,0.15) !important;
+  color: #8d1016 !important;
+  fill: #8d1016 !important;
+}
+.react-flow__edge-path { stroke-opacity: 0.8; }
+.react-flow__node { border-radius: 0 !important; }
+
