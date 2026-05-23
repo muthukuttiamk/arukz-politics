@@ -6,7 +6,7 @@ import config from "../../config";
 import SearchBox from "../ui/SearchBox";
 import CatIcon from "../ui/CatIcon";
 
-export default function Header({ searchQuery, onSearchChange, onSeasonSelect, seasons, totalEvents }) {
+export default function Header({ searchQuery, onSearchChange, onSeasonSelect, onOpenMindmap, seasons, totalEvents }) {
   const [scrolled, setScrolled] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const [mobileSearch, setMobileSearch] = useState(false);
@@ -128,16 +128,16 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
               )}
             </div>
 
-            {/* Mindmap nav button */}
+            {/* Mindmap nav button — prominent */}
             <button
-              onClick={() => document.getElementById("mindmap-section")?.scrollIntoView({ behavior: "smooth" })}
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all"
-              style={{ background: "var(--surface-1)", borderColor: "var(--border)", color: "var(--text-dim)", fontFamily: "'Instrument Sans'", fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer" }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--maroon)"; e.currentTarget.style.color = "var(--maroon)"; e.currentTarget.style.background = "rgba(141,16,22,0.1)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-dim)"; e.currentTarget.style.background = "var(--surface-1)"; }}
-              title="Open Mind Map"
+              onClick={onOpenMindmap}
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-full transition-all"
+              style={{ background:"var(--maroon)", border:"none", color:"white", fontFamily:"'Teko'", fontSize:18, fontWeight:700, letterSpacing:"0.04em", cursor:"pointer", boxShadow:"0 4px 20px rgba(141,16,22,0.5)", lineHeight:1 }}
+              onMouseEnter={e=>{ e.currentTarget.style.background="#a01820"; e.currentTarget.style.boxShadow="0 6px 28px rgba(141,16,22,0.7)"; e.currentTarget.style.transform="translateY(-1px)"; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background="var(--maroon)"; e.currentTarget.style.boxShadow="0 4px 20px rgba(141,16,22,0.5)"; e.currentTarget.style.transform="none"; }}
+              title="Open Full Mind Map"
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
               வரைபடம்
             </button>
 

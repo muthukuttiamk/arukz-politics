@@ -36,8 +36,9 @@ import Footer      from "./components/layout/Footer";
 /* ── Sections ────────────────────────────────────────── */
 import Hero         from "./components/hero/Hero";
 import BJPNarrative from "./components/narrative/BJPNarrative";
-import TreeExplorer from "./components/treemap/TreeExplorer";
-import MindMap     from "./components/treemap/MindMap";
+import TreeExplorer  from "./components/treemap/TreeExplorer";
+import MindMap      from "./components/treemap/MindMap";
+import MindMapPage  from "./components/treemap/MindMapPage";
 
 /* ── Filter + Timeline ───────────────────────────────── */
 import FilterBar from "./components/filters/FilterBar";
@@ -53,7 +54,8 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   /* ── Drawer state ──────────────────────────────────── */
-  const [drawerEvent, setDrawerEvent] = useState(null);
+  const [drawerEvent,    setDrawerEvent]    = useState(null);
+  const [showMindmap,    setShowMindmap]    = useState(false);
 
   const timelineRef = useRef(null);
 
@@ -87,6 +89,7 @@ export default function App() {
       <Header
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        onOpenMindmap={() => setShowMindmap(true)}
         onSeasonSelect={scrollToSeason}
         seasons={seasons}
         totalEvents={events.length}
@@ -129,6 +132,18 @@ export default function App() {
       </div>
 
       <Footer totalEvents={events.length} seasons={seasons} />
+
+      {/* ── Full-page Mindmap overlay ─────────────────── */}
+      <AnimatePresence>
+        {showMindmap && (
+          <MindMapPage
+            allEvents={events}
+            allSeasons={seasons}
+            onClose={() => setShowMindmap(false)}
+            onEventClick={(ev) => { setShowMindmap(false); setDrawerEvent(ev); }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* ── Slide-over evidence drawer ────────────────── */}
       <AnimatePresence>
