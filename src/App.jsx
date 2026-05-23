@@ -36,6 +36,7 @@ import Footer      from "./components/layout/Footer";
 /* ── Sections ────────────────────────────────────────── */
 import Hero         from "./components/hero/Hero";
 import BJPNarrative from "./components/narrative/BJPNarrative";
+import BigResult    from "./components/narrative/BigResult";
 import TreeExplorer  from "./components/treemap/TreeExplorer";
 import MindMap      from "./components/treemap/MindMap";
 import MindMapPage  from "./components/treemap/MindMapPage";
@@ -99,6 +100,9 @@ export default function App() {
       <Hero onStart={scrollToTimeline} seasons={seasons} totalEvents={events.length} />
 
       <BJPNarrative events={events} />
+
+      {/* ══ Big Result — மாபெரும் பகுப்பாய்வு (final chess move analysis) ══ */}
+      <BigResult />
 
       <TreeExplorer
         allEvents={events}
