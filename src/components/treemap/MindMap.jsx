@@ -9,7 +9,7 @@
  *
  * Tech: React Flow v11 — HTML nodes, built-in MiniMap, Controls, Background
  */
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import ReactFlow, {
   Background,
   Controls,
@@ -52,6 +52,7 @@ function partyColor(event) {
 
 /* ── Custom: Root node ────────────────────────────────── */
 function RootNode({ data }) {
+  const words = config.title.split(" ");
   return (
     <div style={{
       width: ROOT_W, height: ROOT_H,
@@ -62,8 +63,8 @@ function RootNode({ data }) {
       gap: 2, padding: "12px 16px",
     }}>
       <img src="/logo.png" alt="logo" style={{ width: 42, height: 42, borderRadius: "50%", border: "1.5px solid rgba(255,202,0,0.5)", marginBottom: 4 }} />
-      <div style={{ fontFamily: "'Teko'", fontWeight: 700, fontSize: 26, color: "white", lineHeight: 0.9 }}>மர்ம</div>
-      <div style={{ fontFamily: "'Teko'", fontWeight: 700, fontSize: 26, color: "#ffca00", lineHeight: 0.9 }}>அரசியல்</div>
+      <div style={{ fontFamily: "'Teko'", fontWeight: 700, fontSize: 22, color: "white", lineHeight: 0.95, textAlign: "center" }}>{words[0]}</div>
+      <div style={{ fontFamily: "'Teko'", fontWeight: 700, fontSize: 22, color: "#ffca00", lineHeight: 0.95, textAlign: "center" }}>{words[1]}</div>
       <div style={{ fontFamily: "'Instrument Sans'", fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.2em", textTransform: "uppercase", marginTop: 4 }}>
         {data.totalEvents} EVENTS · 2015–2026
       </div>
@@ -154,7 +155,9 @@ const nodeTypes = { root: RootNode, season: SeasonNode, event: EventNode };
    MAIN COMPONENT
    ════════════════════════════════════════════════════════ */
 export default function MindMap({ allEvents, allSeasons, onEventClick }) {
-  const [expanded, setExpanded] = useState(new Set());
+  const [expanded,   setExpanded]   = useState(new Set());
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const sectionRef = useRef(null);
 
   const toggleSeason = useCallback((num) => {
     setExpanded(prev => {
@@ -162,6 +165,16 @@ export default function MindMap({ allEvents, allSeasons, onEventClick }) {
       next.has(num) ? next.delete(num) : next.add(num);
       return next;
     });
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
   }, []);
 
   /* ── Build nodes + edges ─────────────────────────── */
@@ -261,7 +274,11 @@ export default function MindMap({ allEvents, allSeasons, onEventClick }) {
   const currentEdges = edges;
 
   return (
-    <section style={{ background: "var(--bg)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "80px 0" }}>
+    <section
+      id="mindmap-section"
+      ref={sectionRef}
+      style={{ background: "var(--bg)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: isFullscreen ? "24px" : "80px 0" }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* Title */}
@@ -291,13 +308,19 @@ export default function MindMap({ allEvents, allSeasons, onEventClick }) {
               onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-dim)"; }}
             >{b.label}</button>
           ))}
+          {/* Fullscreen toggle */}
+          <button onClick={toggleFullscreen}
+            style={{ fontFamily: "'Instrument Sans'", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer", color: isFullscreen ? "var(--gold)" : "var(--text-dim)", background: isFullscreen ? "rgba(255,202,0,0.1)" : "var(--surface-2)", border: `1px solid ${isFullscreen ? "var(--gold)" : "var(--border)"}`, borderRadius: 6, padding: "6px 16px", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 6 }}
+          >
+            {isFullscreen ? "⊡ Exit Fullscreen" : "⛶ Full Screen"}
+          </button>
           <span style={{ fontFamily: "'Instrument Sans'", fontSize: 10, color: "var(--text-dim)" }}>
-            Scroll to zoom · Drag to pan · Use ⊞ controls
+            Scroll · Drag · ⛶ for fullscreen
           </span>
         </div>
 
         {/* React Flow canvas */}
-        <div style={{ height: 640, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)", background: "var(--surface-0)" }}>
+        <div style={{ height: isFullscreen ? "calc(100vh - 280px)" : "calc(100vh - 120px)", minHeight: 560, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)", background: "var(--surface-0)" }}>
           <ReactFlow
             nodes={currentNodes}
             edges={currentEdges}

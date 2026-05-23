@@ -8,9 +8,9 @@ export default function Footer({ totalEvents, seasons }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
         <div className="flex items-center gap-4 mb-10">
           <div className="flex-1 h-px" style={{ background:"linear-gradient(to right, transparent, rgba(141,16,22,0.3))" }}/>
-          <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background:"var(--maroon)", boxShadow:"0 4px 16px rgba(141,16,22,0.4)" }}>
-            <span style={{ fontFamily:"'Teko'", fontSize:20, fontWeight:700, color:"var(--gold)" }}>ம</span>
+          <div className="w-10 h-10 rounded-full overflow-hidden shrink-0"
+            style={{ border: "1.5px solid var(--maroon)", boxShadow: "0 4px 16px rgba(141,16,22,0.4)" }}>
+            <img src="/logo.png" alt={config.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
           <div className="flex-1 h-px" style={{ background:"linear-gradient(to left, transparent, rgba(141,16,22,0.3))" }}/>
         </div>
@@ -55,11 +55,30 @@ export default function Footer({ totalEvents, seasons }) {
           </div>
         </div>
 
-        {/* Bottom */}
+        {/* Bottom row */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2" style={{ borderTop:"1px solid var(--border)" }}>
           <p style={{ fontFamily:"'Instrument Sans'", fontSize:11, color:"var(--text-dim)" }}>{config.title} · {config.subtitle}</p>
           <p style={{ fontFamily:"'Instrument Sans'", fontSize:11, color:"var(--text-dim)" }}>{config.dateRange} · {totalEvents} events</p>
         </div>
+      </div>
+
+      {/* ARUKZ DIGITAL copyright bar */}
+      <div style={{ borderTop: "1px solid var(--border)", background: "#0a0506", padding: "12px 24px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 6 }}>
+        <a href={config.copyrightUrl} target="_blank" rel="noopener noreferrer"
+          style={{ fontFamily: "'Instrument Sans'", fontSize: 11, fontWeight: 800, color: "var(--maroon)", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", transition: "color 0.2s" }}
+          onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"}
+          onMouseLeave={e => e.currentTarget.style.color = "var(--maroon)"}
+        >
+          © {new Date().getFullYear()} ARUKZ DIGITAL
+        </a>
+        <span style={{ color: "var(--border)", fontSize: 10 }}>·</span>
+        <a href={config.copyrightUrl} target="_blank" rel="noopener noreferrer"
+          style={{ fontFamily: "'Instrument Sans'", fontSize: 11, fontWeight: 700, color: "var(--text-dim)", textDecoration: "none", transition: "color 0.2s" }}
+          onMouseEnter={e => e.currentTarget.style.color = "var(--gold)"}
+          onMouseLeave={e => e.currentTarget.style.color = "var(--text-dim)"}
+        >www.arukz.com</a>
+        <span style={{ color: "var(--border)", fontSize: 10 }}>·</span>
+        <span style={{ fontFamily: "'Noto Sans Tamil'", fontSize: 10, color: "var(--text-dim)" }}>அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை</span>
       </div>
     </footer>
   );

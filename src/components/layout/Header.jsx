@@ -128,6 +128,19 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
               )}
             </div>
 
+            {/* Mindmap nav button */}
+            <button
+              onClick={() => document.getElementById("mindmap-section")?.scrollIntoView({ behavior: "smooth" })}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition-all"
+              style={{ background: "var(--surface-1)", borderColor: "var(--border)", color: "var(--text-dim)", fontFamily: "'Instrument Sans'", fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", cursor: "pointer" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--maroon)"; e.currentTarget.style.color = "var(--maroon)"; e.currentTarget.style.background = "rgba(141,16,22,0.1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-dim)"; e.currentTarget.style.background = "var(--surface-1)"; }}
+              title="Open Mind Map"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg>
+              வரைபடம்
+            </button>
+
             {/* Event count */}
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full"
               style={{ background:"var(--surface-1)", border:"1px solid var(--border)" }}>
@@ -135,6 +148,7 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
               <span style={{ fontFamily:"'Instrument Sans'", fontSize:11, fontWeight:700, color:"var(--text-muted)" }}>{totalEvents}</span>
             </div>
           </div>
+
         </div>
 
         {mobileSearch && (
