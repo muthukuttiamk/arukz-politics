@@ -129,7 +129,7 @@ export default function BigResult() {
         </motion.div>
 
         {/* ── THREE PHASES ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        <div className="big-result-phases" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1rem 1.5rem", marginBottom:48 }}>
           {PHASES.map((ph, i) => (
             <motion.div key={ph.num}
               initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function BigResult() {
 
         {/* ── VERDICT CARDS ── */}
         <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
+          className="big-result-verdict grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
         >
           {/* BJP verdict */}
           <div style={{ background: "var(--surface-1)", border: `1.5px solid ${VERDICT.bjp.color}40`, borderRadius: 16, padding: "28px 26px" }}>

@@ -23,7 +23,7 @@ export default function QuickNav({ seasonNums }) {
   return (
     <div
       className="hidden xl:flex flex-col gap-1 fixed z-40"
-      style={{ right:12, top:"50%", transform:"translateY(-50%)", background:"var(--surface-2)", border:"1px solid var(--border)", borderRadius:14, padding:"8px 5px", boxShadow:"0 4px 24px rgba(0,0,0,0.4)" }}
+      style={{ right:16, top:"50%", transform:"translateY(-50%)", background:"var(--surface-2)", border:"1px solid var(--border)", borderRadius:14, padding:"8px 5px", boxShadow:"0 4px 24px rgba(0,0,0,0.4)", maxHeight:"80vh", overflowY:"auto" }}
     >
       <span style={{ fontFamily:"'Instrument Sans'", fontSize:7, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:"var(--text-dim)", textAlign:"center", display:"block", marginBottom:4 }}>P</span>
       {seasonNums.map((num) => {

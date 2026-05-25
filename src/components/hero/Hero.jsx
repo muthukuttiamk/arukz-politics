@@ -1,265 +1,170 @@
 /**
- * Hero — Full-screen cinematic opening section.
- *
- * Features:
- *  - Background image (public/hero-bg.png) with dark gradient overlay
- *  - Animated title: மர்ம (white) + அரசியல் (gold gradient)
- *  - VERIFIED ARCHIVE badge
- *  - Animated stats dashboard (HeroStats)
- *  - Category pills preview
- *  - Dual CTAs: "ஆவணத்தை ஆரம்பி" + "EXPLORE ARCHIVE"
- *  - Audience row
- *  - Scroll indicator
- *
- * Props:
- *   onStart      {function}   — scroll to timeline
- *   seasons      {Array}
- *   totalEvents  {number}
+ * Hero — ஆட்சி மாற்றம் 2026
+ * Clean, cinematic, minimal-text Netflix-style hero.
+ * Mobile-first responsive design.
  */
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import config from "../../config";
-import HeroStats from "./HeroStats";
-import AudienceRow from "./AudienceRow";
-import Button from "../ui/Button";
-import EvidenceSeal from "../ui/EvidenceSeal";
+import AnimatedCounter from "../ui/AnimatedCounter";
 
-/* ── Framer Motion variants ─────────────────────────────── */
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-const fadeUp = {
-  hidden:  { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] } },
-};
-const scaleIn = {
-  hidden:  { opacity: 0, scale: 0.93 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 1, ease: [0.25, 0.46, 0.45, 0.94] } },
-};
+const fade = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay },
+});
 
-export default function Hero({ onStart, seasons, totalEvents }) {
-  const partyKeys = Object.keys(config.parties).filter((k) => k !== "unknown");
+/* Key stats for the strip */
+const STATS = [
+  { n: 139,  ta: "நிகழ்வுகள்",  en: "EVENTS"   },
+  { n: 13,   ta: "பருவங்கள்",   en: "SEASONS"  },
+  { n: 12,   ta: "ஆண்டுகள்",   en: "YEARS"    },
+  { n: 2026, ta: "இறுதி ஆண்டு", en: "END YEAR" },
+];
+
+export default function Hero({ seasons, totalEvents }) {
+  const partyKeys = Object.keys(config.parties).filter(k => k !== "unknown");
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      aria-label="Hero"
       style={{
-        paddingTop: "calc(100px + 1rem)",
-        paddingBottom: "4rem",
-        /* Background: documentary image + maroon gradient overlay */
+        position: "relative",
+        minHeight: "100svh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        paddingTop: "80px",
+        paddingBottom: "40px",
         background: `
-          linear-gradient(
-            180deg,
-            rgba(4,2,4,0.90) 0%,
-            rgba(141,16,22,0.65) 40%,
-            rgba(8,5,8,0.97) 100%
+          linear-gradient(180deg,
+            rgba(3,1,3,0.97) 0%,
+            rgba(80,5,10,0.80) 30%,
+            rgba(141,16,22,0.40) 55%,
+            rgba(6,4,6,0.99) 100%
           ),
-          url('/hero-bg.png') center center / cover no-repeat
+          url('/hero-bg.png') center 30% / cover no-repeat
         `,
       }}
     >
-      {/* Top accent bar */}
-      <div
-        className="absolute top-0 left-0 right-0 h-1 z-10"
-        style={{ background: "linear-gradient(90deg, #5c1a1b, #8d1016, #ffca00)" }}
-      />
+      {/* Accent bar */}
+      <div style={{ position:"absolute", top:0, left:0, right:0, height:3, background:"linear-gradient(90deg,#3d0c0e,#8d1016 40%,#ffca00 70%,#8d1016)", zIndex:10 }} />
 
-      {/* Left/right vertical labels — visible on XL screens only */}
-      {["Tamil Nadu Political Archive", "2015 — 2026"].map((text, i) => (
-        <div
-          key={i}
-          className="hidden xl:flex absolute flex-col items-center gap-2"
-          style={{ [i === 0 ? "left" : "right"]: 24, top: "50%", transform: "translateY(-50%)" }}
-        >
-          <div className="w-px h-16" style={{ background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.2))" }} />
-          <span
-            style={{
-              fontFamily: "'Teko', sans-serif",
-              fontSize: 9,
-              letterSpacing: "0.4em",
-              color: "rgba(255,255,255,0.3)",
-              textTransform: "uppercase",
-              writingMode: "vertical-rl",
-              transform: i === 0 ? "rotate(180deg)" : "none",
-            }}
-          >
-            {text}
-          </span>
-          <div className="w-px h-16" style={{ background: "linear-gradient(to top, transparent, rgba(255,255,255,0.2))" }} />
-        </div>
-      ))}
+      {/* Subtle grid overlay */}
+      <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(141,16,22,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(141,16,22,0.07) 1px,transparent 1px)", backgroundSize:"48px 48px", pointerEvents:"none" }} />
 
-      {/* ── Main content ────────────────────────────────── */}
-      <motion.div
-        className="relative z-10 text-center max-w-5xl mx-auto px-4 w-full"
-        variants={container}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Evidence stamp + seal */}
-        <motion.div variants={fadeUp} className="flex items-center justify-center gap-3 mb-6">
-          <EvidenceSeal light size={52} />
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-            style={{ background: "rgba(255,255,255,0.1)", border: "1.5px solid rgba(255,255,255,0.2)" }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ffca00] animate-pulse" />
-            <span
-              style={{
-                fontFamily: "'Instrument Sans', sans-serif",
-                fontSize: 10,
-                fontWeight: 800,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.8)",
-              }}
-            >
-              VERIFIED DOCUMENTARY ARCHIVE
+      {/* ── Content ── */}
+      <div style={{ position:"relative", zIndex:5, width:"100%", maxWidth:900, margin:"0 auto", padding:"0 20px", textAlign:"center" }}>
+
+        {/* Badge */}
+        <motion.div {...fade(0)} style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, marginBottom:24 }}>
+          <span style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"5px 14px", background:"rgba(141,16,22,0.18)", border:"1px solid rgba(141,16,22,0.45)", borderRadius:999, backdropFilter:"blur(8px)" }}>
+            <span style={{ width:6, height:6, borderRadius:"50%", background:"#ffca00", display:"inline-block", animation:"pulse 1.8s infinite" }} />
+            <span style={{ fontFamily:"'Instrument Sans'", fontSize:9, fontWeight:800, letterSpacing:"0.25em", color:"rgba(255,255,255,0.8)", textTransform:"uppercase" }}>
+              VERIFIED DOCUMENTARY ARCHIVE · ARUKZ DIGITAL
             </span>
-          </div>
-        </motion.div>
-
-        {/* Title */}
-        <motion.div variants={scaleIn} className="mb-3">
-          <h1
-            style={{
-              fontFamily: "'Teko', sans-serif",
-              fontWeight: 700,
-              fontSize: "clamp(5rem, 16vw, 12rem)",
-              lineHeight: 0.95,
-              color: "white",
-              textShadow: "0 4px 40px rgba(0,0,0,0.5)",
-            }}
-          >
-            {config.title.split(" ")[0]}
-          </h1>
-          <h1
-            style={{
-              fontFamily: "'Teko', sans-serif",
-              fontWeight: 700,
-              fontSize: "clamp(5rem, 16vw, 12rem)",
-              lineHeight: 0.95,
-              background: "linear-gradient(135deg, #ffca00 0%, #ffe082 50%, #c8a000 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              filter: "drop-shadow(0 4px 24px rgba(255,202,0,0.45))",
-              marginTop: "-0.1em",
-            }}
-          >
-            {config.title.split(" ")[1]}
-          </h1>
-        </motion.div>
-
-        {/* Subtitle */}
-        <motion.div variants={fadeUp} className="flex items-center justify-center gap-4 mb-8">
-          <div className="h-px flex-1 max-w-28" style={{ background: "rgba(255,255,255,0.2)" }} />
-          <span
-            style={{
-              fontFamily: "'Teko', sans-serif",
-              fontSize: "clamp(1.2rem, 3vw, 2rem)",
-              letterSpacing: "0.5em",
-              fontWeight: 400,
-              color: "rgba(255,255,255,0.55)",
-              textTransform: "uppercase",
-            }}
-          >
-            {config.subtitle}
           </span>
-          <div className="h-px flex-1 max-w-28" style={{ background: "rgba(255,255,255,0.2)" }} />
         </motion.div>
 
-        {/* Description */}
-        <motion.p
-          variants={fadeUp}
-          style={{
-            fontFamily: "'Noto Sans Tamil', sans-serif",
-            fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)",
-            lineHeight: 2,
-            color: "rgba(255,255,255,0.7)",
-            maxWidth: 600,
-            margin: "0 auto 2.5rem",
-          }}
-        >
-          {totalEvents} முக்கிய நிகழ்வுகளின் தொகுப்பு — தேர்தல்கள், கூட்டணிகள், நெருக்கடிகள்,
-          திருப்புமுனைகள் — 12 பருவங்களில் 11 ஆண்டு{" "}
-          <span style={{ fontWeight: 700, color: "#ffca00" }}>அரசியல் வரலாற்றின் முழு ஆவணம்.</span>
+        {/* H1 — two lines */}
+        <motion.div {...fade(0.1)} style={{ marginBottom:8 }}>
+          <h1 style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(2.8rem,8vw,6.5rem)", lineHeight:0.88, color:"white", margin:0, textShadow:"0 4px 60px rgba(0,0,0,0.7)" }}>
+            {config.heroH1line1}
+          </h1>
+          <h1 style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(2.8rem,8vw,6.5rem)", lineHeight:0.88, margin:0, marginTop:"0.05em", background:"linear-gradient(135deg,#ff5040 0%,#ff8040 30%,#ffca00 65%,#ff6020 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", filter:"drop-shadow(0 2px 20px rgba(255,80,0,0.45))" }}>
+            {config.heroH1line2}
+          </h1>
+        </motion.div>
+
+        {/* Tagline sub-line */}
+        <motion.p {...fade(0.22)} style={{ fontFamily:"'Noto Sans Tamil'", fontSize:"clamp(12px,2vw,16px)", color:"rgba(255,255,255,0.5)", margin:"14px auto 0", maxWidth:580, lineHeight:1.65 }}>
+          {config.heroH1sub}
         </motion.p>
 
-        {/* Stats */}
-        <motion.div variants={fadeUp}>
-          <HeroStats seasons={seasons} totalEvents={totalEvents} />
+        {/* Stats strip — 4-col desktop, 2×2 mobile */}
+        <motion.div {...fade(0.32)} className="hero-stats-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:0, maxWidth:580, margin:"28px auto 0", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:14, overflow:"hidden", backdropFilter:"blur(12px)" }}>
+          {STATS.map((s, i) => (
+            <div key={s.en} style={{ padding:"16px 8px", borderRight: i < STATS.length-1 ? "1px solid rgba(255,255,255,0.08)" : "none", display:"flex", flexDirection:"column", alignItems:"center" }}>
+              <div style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(1.6rem,4vw,2.8rem)", color:"var(--maroon)", lineHeight:1 }}>
+                <AnimatedCounter target={s.n} />
+              </div>
+              <div style={{ fontFamily:"'Instrument Sans'", fontSize:8, fontWeight:800, color:"rgba(255,255,255,0.35)", letterSpacing:"0.18em", textTransform:"uppercase", marginTop:2 }}>
+                {s.en}
+              </div>
+              <div style={{ fontFamily:"'Noto Sans Tamil'", fontSize:10, color:"rgba(255,255,255,0.3)", marginTop:1 }}>
+                {s.ta}
+              </div>
+            </div>
+          ))}
         </motion.div>
 
-        {/* Party preview pills */}
-        <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-2 mb-8">
-          {partyKeys.map((k) => {
+        {/* CTAs */}
+        <motion.div {...fade(0.42)} style={{ display:"flex", flexWrap:"wrap", alignItems:"center", justifyContent:"center", gap:12, marginTop:28 }}>
+          <Link to="/timeline"
+            style={{ display:"inline-flex", alignItems:"center", gap:10, fontFamily:"'Teko'", fontSize:"clamp(18px,3vw,22px)", fontWeight:700, letterSpacing:"0.05em", color:"white", background:"linear-gradient(135deg,#8d1016,#b01a22)", borderRadius:12, padding:"13px 32px", textDecoration:"none", boxShadow:"0 8px 32px rgba(141,16,22,0.55)", transition:"all 0.25s", whiteSpace:"nowrap" }}
+            onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 12px 40px rgba(141,16,22,0.75)";}}
+            onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="0 8px 32px rgba(141,16,22,0.55)";}}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            {config.heroCTA1}
+          </Link>
+
+          <Link to="/timeline#season-13"
+            style={{ display:"inline-flex", alignItems:"center", gap:10, fontFamily:"'Teko'", fontSize:"clamp(18px,3vw,22px)", fontWeight:700, letterSpacing:"0.05em", color:"#ffca00", background:"rgba(255,202,0,0.07)", border:"1.5px solid rgba(255,202,0,0.4)", borderRadius:12, padding:"13px 32px", textDecoration:"none", transition:"all 0.25s", whiteSpace:"nowrap" }}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,202,0,0.14)";e.currentTarget.style.borderColor="rgba(255,202,0,0.75)";e.currentTarget.style.transform="translateY(-2px)";}}
+            onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,202,0,0.07)";e.currentTarget.style.borderColor="rgba(255,202,0,0.4)";e.currentTarget.style.transform="none";}}
+          >
+            ♟ {config.heroCTA2}
+          </Link>
+        </motion.div>
+
+        {/* Party pills — compact */}
+        <motion.div {...fade(0.52)} style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"6px 8px", marginTop:20 }}>
+          {partyKeys.map(k => {
             const p = config.parties[k];
             return (
-              <span
-                key={k}
-                className="inline-flex items-center gap-1.5 rounded-full"
-                style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
-                  fontSize: 10,
-                  fontWeight: 800,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  padding: "4px 12px",
-                  background: `${p.color}20`,
-                  border: `1px solid ${p.color}50`,
-                  color: p.color,
-                }}
-              >
+              <span key={k} style={{ display:"inline-flex", alignItems:"center", gap:5, fontFamily:"'Instrument Sans'", fontSize:8, fontWeight:800, letterSpacing:"0.1em", textTransform:"uppercase", padding:"3px 10px", background:`${p.color}14`, border:`1px solid ${p.color}40`, color:p.color, borderRadius:999 }}>
+                <span style={{ width:4, height:4, borderRadius:"50%", background:p.color, display:"inline-block" }} />
                 {p.en}
               </span>
             );
           })}
         </motion.div>
 
-        {/* CTAs */}
-        <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button variant="primary" onClick={onStart}>
-            ஆவணத்தை ஆரம்பி
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-            </svg>
-          </Button>
-          <Button variant="accent" onClick={onStart}>
-            📋 EXPLORE ARCHIVE
-          </Button>
+        {/* Quick nav chips */}
+        <motion.div {...fade(0.58)} style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:8, marginTop:14 }}>
+          {[
+            { to:"/timeline", label:"📋 காலவரிசை" },
+            { to:"/evidence", label:"⚖️ ஆதாரங்கள்" },
+            { to:"/map",      label:"🗺 வரைபடம்" },
+          ].map(l => (
+            <Link key={l.to} to={l.to}
+              style={{ fontFamily:"'Noto Sans Tamil'", fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.5)", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:8, padding:"5px 14px", textDecoration:"none", transition:"all 0.2s" }}
+              onMouseEnter={e=>{e.currentTarget.style.color="white";e.currentTarget.style.borderColor="rgba(255,255,255,0.3)";}}
+              onMouseLeave={e=>{e.currentTarget.style.color="rgba(255,255,255,0.5)";e.currentTarget.style.borderColor="rgba(255,255,255,0.1)";}}
+            >
+              {l.label}
+            </Link>
+          ))}
         </motion.div>
-
-        {/* Audience tags */}
-        <motion.div variants={fadeUp}>
-          <AudienceRow />
-        </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"
-        style={{ animation: "heroFloat 2.5s ease-in-out infinite" }}
-      >
-        <span
-          style={{
-            fontFamily: "'Instrument Sans'",
-            fontSize: 9,
-            fontWeight: 700,
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.3)",
-          }}
-        >
-          SCROLL
-        </span>
-        <div className="w-px h-8" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)" }} />
+      <div style={{ position:"absolute", bottom:24, left:"50%", transform:"translateX(-50%)", display:"flex", flexDirection:"column", alignItems:"center", gap:4, animation:"heroFloat 2.5s ease-in-out infinite" }}>
+        <span style={{ fontFamily:"'Instrument Sans'", fontSize:7, fontWeight:700, letterSpacing:"0.4em", color:"rgba(255,255,255,0.2)", textTransform:"uppercase" }}>SCROLL</span>
+        <div style={{ width:1, height:28, background:"linear-gradient(to bottom, rgba(255,255,255,0.25), transparent)" }} />
       </div>
 
       <style>{`
         @keyframes heroFloat {
-          0%, 100% { transform: translateX(-50%) translateY(0); }
-          50%       { transform: translateX(-50%) translateY(8px); }
+          0%,100% { transform: translateX(-50%) translateY(0); }
+          50%      { transform: translateX(-50%) translateY(6px); }
+        }
+        @keyframes pulse {
+          0%,100% { opacity:1; transform:scale(1); }
+          50%      { opacity:0.6; transform:scale(1.3); }
         }
       `}</style>
     </section>

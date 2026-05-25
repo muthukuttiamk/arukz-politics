@@ -223,7 +223,7 @@ export default function TreeExplorer({ allEvents, allSeasons, onEventClick }) {
         <div className="flex justify-center gap-2 mb-10">
           {[
             { key: "explorer", icon: "search",  label: "Explorer Mode" },
-            { key: "fulltree", icon: "tree",    label: "Full Tree — All 130 Events" },
+            { key: "fulltree", icon: "tree",    label: "Full Tree — All 139 Events" },
           ].map(m => (
             <button key={m.key} onClick={() => setMode(m.key)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all"
@@ -325,7 +325,7 @@ export default function TreeExplorer({ allEvents, allSeasons, onEventClick }) {
         )}
 
         {/* ═══════════════════════════════════════
-            FULL TREE MODE — All 130 events
+            FULL TREE MODE — All 139 events
             ═══════════════════════════════════════ */}
         {mode === "fulltree" && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
