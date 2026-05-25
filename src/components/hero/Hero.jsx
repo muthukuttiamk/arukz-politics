@@ -39,12 +39,7 @@ export default function Hero({ seasons, totalEvents }) {
         paddingTop: "80px",
         paddingBottom: "40px",
         background: `
-          linear-gradient(180deg,
-            rgba(3,1,3,0.97) 0%,
-            rgba(80,5,10,0.80) 30%,
-            rgba(141,16,22,0.40) 55%,
-            rgba(6,4,6,0.99) 100%
-          ),
+          var(--hero-gradient),
           url('/hero-bg.png') center 30% / cover no-repeat
         `,
       }}
@@ -58,11 +53,11 @@ export default function Hero({ seasons, totalEvents }) {
       {/* ── Content ── */}
       <div style={{ position:"relative", zIndex:5, width:"100%", maxWidth:900, margin:"0 auto", padding:"0 20px", textAlign:"center" }}>
 
-        {/* Badge */}
+         {/* Badge */}
         <motion.div {...fade(0)} style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, marginBottom:24 }}>
           <span style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"5px 14px", background:"rgba(141,16,22,0.18)", border:"1px solid rgba(141,16,22,0.45)", borderRadius:999, backdropFilter:"blur(8px)" }}>
             <span style={{ width:6, height:6, borderRadius:"50%", background:"#ffca00", display:"inline-block", animation:"pulse 1.8s infinite" }} />
-            <span style={{ fontFamily:"'Instrument Sans'", fontSize:9, fontWeight:800, letterSpacing:"0.25em", color:"rgba(255,255,255,0.8)", textTransform:"uppercase" }}>
+            <span style={{ fontFamily:"'Instrument Sans'", fontSize:9, fontWeight:800, letterSpacing:"0.25em", color:"var(--hero-text)", textTransform:"uppercase" }}>
               VERIFIED DOCUMENTARY ARCHIVE · ARUKZ DIGITAL
             </span>
           </span>
@@ -70,7 +65,7 @@ export default function Hero({ seasons, totalEvents }) {
 
         {/* H1 — two lines */}
         <motion.div {...fade(0.1)} style={{ marginBottom:8 }}>
-          <h1 style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(2.8rem,8vw,6.5rem)", lineHeight:0.88, color:"white", margin:0, textShadow:"0 4px 60px rgba(0,0,0,0.7)" }}>
+          <h1 style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(2.8rem,8vw,6.5rem)", lineHeight:0.88, color:"var(--hero-h1)", margin:0, textShadow:"0 4px 60px rgba(0,0,0,0.7)" }}>
             {config.heroH1line1}
           </h1>
           <h1 style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(2.8rem,8vw,6.5rem)", lineHeight:0.88, margin:0, marginTop:"0.05em", background:"linear-gradient(135deg,#ff5040 0%,#ff8040 30%,#ffca00 65%,#ff6020 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", filter:"drop-shadow(0 2px 20px rgba(255,80,0,0.45))" }}>
@@ -79,21 +74,21 @@ export default function Hero({ seasons, totalEvents }) {
         </motion.div>
 
         {/* Tagline sub-line */}
-        <motion.p {...fade(0.22)} style={{ fontFamily:"'Noto Sans Tamil'", fontSize:"clamp(12px,2vw,16px)", color:"rgba(255,255,255,0.5)", margin:"14px auto 0", maxWidth:580, lineHeight:1.65 }}>
+        <motion.p {...fade(0.22)} style={{ fontFamily:"'Noto Sans Tamil'", fontSize:"clamp(12px,2vw,16px)", color:"var(--hero-text-dim)", margin:"14px auto 0", maxWidth:580, lineHeight:1.65 }}>
           {config.heroH1sub}
         </motion.p>
 
         {/* Stats strip — 4-col desktop, 2×2 mobile */}
-        <motion.div {...fade(0.32)} className="hero-stats-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:0, maxWidth:580, margin:"28px auto 0", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:14, overflow:"hidden", backdropFilter:"blur(12px)" }}>
+        <motion.div {...fade(0.32)} className="hero-stats-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:0, maxWidth:580, margin:"28px auto 0", background:"var(--hero-glass)", border:"1px solid var(--hero-glass-border)", borderRadius:14, overflow:"hidden", backdropFilter:"blur(12px)" }}>
           {STATS.map((s, i) => (
-            <div key={s.en} style={{ padding:"16px 8px", borderRight: i < STATS.length-1 ? "1px solid rgba(255,255,255,0.08)" : "none", display:"flex", flexDirection:"column", alignItems:"center" }}>
+            <div key={s.en} style={{ padding:"16px 8px", borderRight: i < STATS.length-1 ? "1px solid var(--hero-glass-border)" : "none", display:"flex", flexDirection:"column", alignItems:"center" }}>
               <div style={{ fontFamily:"'Teko'", fontWeight:700, fontSize:"clamp(1.6rem,4vw,2.8rem)", color:"var(--maroon)", lineHeight:1 }}>
                 <AnimatedCounter target={s.n} />
               </div>
-              <div style={{ fontFamily:"'Instrument Sans'", fontSize:8, fontWeight:800, color:"rgba(255,255,255,0.35)", letterSpacing:"0.18em", textTransform:"uppercase", marginTop:2 }}>
+              <div style={{ fontFamily:"'Instrument Sans'", fontSize:8, fontWeight:800, color:"var(--hero-text-muted)", letterSpacing:"0.18em", textTransform:"uppercase", marginTop:2 }}>
                 {s.en}
               </div>
-              <div style={{ fontFamily:"'Noto Sans Tamil'", fontSize:10, color:"rgba(255,255,255,0.3)", marginTop:1 }}>
+              <div style={{ fontFamily:"'Noto Sans Tamil'", fontSize:10, color:"var(--hero-text-dim)", marginTop:1 }}>
                 {s.ta}
               </div>
             </div>
@@ -112,9 +107,9 @@ export default function Hero({ seasons, totalEvents }) {
           </Link>
 
           <Link to="/timeline#season-13"
-            style={{ display:"inline-flex", alignItems:"center", gap:10, fontFamily:"'Teko'", fontSize:"clamp(18px,3vw,22px)", fontWeight:700, letterSpacing:"0.05em", color:"#ffca00", background:"rgba(255,202,0,0.07)", border:"1.5px solid rgba(255,202,0,0.4)", borderRadius:12, padding:"13px 32px", textDecoration:"none", transition:"all 0.25s", whiteSpace:"nowrap" }}
-            onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,202,0,0.14)";e.currentTarget.style.borderColor="rgba(255,202,0,0.75)";e.currentTarget.style.transform="translateY(-2px)";}}
-            onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,202,0,0.07)";e.currentTarget.style.borderColor="rgba(255,202,0,0.4)";e.currentTarget.style.transform="none";}}
+            style={{ display:"inline-flex", alignItems:"center", gap:10, fontFamily:"'Teko'", fontSize:"clamp(18px,3vw,22px)", fontWeight:700, letterSpacing:"0.05em", color:"var(--gold)", background:"var(--hero-glass)", border:"1.5px solid var(--gold)", borderRadius:12, padding:"13px 32px", textDecoration:"none", transition:"all 0.25s", whiteSpace:"nowrap" }}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(141,16,22,0.15)";e.currentTarget.style.transform="translateY(-2px)";}}
+            onMouseLeave={e=>{e.currentTarget.style.background="var(--hero-glass)";e.currentTarget.style.transform="none";}}
           >
             ♟ {config.heroCTA2}
           </Link>
@@ -141,9 +136,9 @@ export default function Hero({ seasons, totalEvents }) {
             { to:"/map",      label:"🗺 வரைபடம்" },
           ].map(l => (
             <Link key={l.to} to={l.to}
-              style={{ fontFamily:"'Noto Sans Tamil'", fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.5)", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:8, padding:"5px 14px", textDecoration:"none", transition:"all 0.2s" }}
-              onMouseEnter={e=>{e.currentTarget.style.color="white";e.currentTarget.style.borderColor="rgba(255,255,255,0.3)";}}
-              onMouseLeave={e=>{e.currentTarget.style.color="rgba(255,255,255,0.5)";e.currentTarget.style.borderColor="rgba(255,255,255,0.1)";}}
+              style={{ fontFamily:"'Noto Sans Tamil'", fontSize:12, fontWeight:600, color:"var(--hero-text-dim)", background:"var(--hero-glass)", border:"1px solid var(--hero-glass-border)", borderRadius:8, padding:"5px 14px", textDecoration:"none", transition:"all 0.2s" }}
+              onMouseEnter={e=>{e.currentTarget.style.color="var(--maroon)";e.currentTarget.style.borderColor="var(--maroon)";}}
+              onMouseLeave={e=>{e.currentTarget.style.color="var(--hero-text-dim)";e.currentTarget.style.borderColor="var(--hero-glass-border)";}}
             >
               {l.label}
             </Link>
@@ -153,8 +148,8 @@ export default function Hero({ seasons, totalEvents }) {
 
       {/* Scroll indicator */}
       <div style={{ position:"absolute", bottom:24, left:"50%", transform:"translateX(-50%)", display:"flex", flexDirection:"column", alignItems:"center", gap:4, animation:"heroFloat 2.5s ease-in-out infinite" }}>
-        <span style={{ fontFamily:"'Instrument Sans'", fontSize:7, fontWeight:700, letterSpacing:"0.4em", color:"rgba(255,255,255,0.2)", textTransform:"uppercase" }}>SCROLL</span>
-        <div style={{ width:1, height:28, background:"linear-gradient(to bottom, rgba(255,255,255,0.25), transparent)" }} />
+        <span style={{ fontFamily:"'Instrument Sans'", fontSize:7, fontWeight:700, letterSpacing:"0.4em", color:"var(--hero-text-muted)", textTransform:"uppercase" }}>SCROLL</span>
+        <div style={{ width:1, height:28, background:"linear-gradient(to bottom, var(--border), transparent)" }} />
       </div>
 
       <style>{`

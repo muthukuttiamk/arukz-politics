@@ -52,6 +52,23 @@ function PageWrapper({ children }) {
 export default function App() {
   const navigate = useNavigate();
 
+  /* ── Theme state ──────────────────────────────────── */
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  });
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    document.documentElement.setAttribute("data-theme", nextTheme);
+  };
+
+  // Initialize theme attribute
+  useState(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  });
+
   /* ── Drawer state ─────────────────────────────────── */
   const [drawerEvent, setDrawerEvent] = useState(null);
 
@@ -109,6 +126,8 @@ export default function App() {
         onSeasonSelect={scrollToSeason}
         seasons={allSeasons}
         totalEvents={allEvents.length}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* ── Routed pages ─────────────────────────────── */}

@@ -15,7 +15,7 @@ const NAV = [
   { to:"/map",      label:"வரைபடம்",    en:"Map",      icon:"🗺" },
 ];
 
-export default function Header({ searchQuery, onSearchChange, onSeasonSelect, seasons, totalEvents }) {
+export default function Header({ searchQuery, onSearchChange, onSeasonSelect, seasons, totalEvents, theme, toggleTheme }) {
   const [scrolled,    setScrolled]    = useState(false);
   const [dropOpen,    setDropOpen]    = useState(false);
   const [mobileOpen,  setMobileOpen]  = useState(false);
@@ -48,10 +48,10 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
       <header
         style={{
           position:"fixed", left:0, right:0, top:26, zIndex:50,
-          background: scrolled ? "rgba(6,3,6,0.97)" : "rgba(6,3,6,0.82)",
+          background: scrolled ? "var(--header-bg-scroll)" : "var(--header-bg)",
           backdropFilter:"blur(20px)", WebkitBackdropFilter:"blur(20px)",
-          borderBottom:`1px solid ${scrolled?"var(--border)":"rgba(45,26,28,0.4)"}`,
-          boxShadow: scrolled ? "0 2px 32px rgba(0,0,0,0.5)" : "none",
+          borderBottom:`1px solid ${scrolled?"var(--border)":"rgba(45,26,28,0.2)"}`,
+          boxShadow: scrolled ? "0 2px 32px var(--shadow-color)" : "none",
           transition:"all 0.3s",
         }}
       >
@@ -77,7 +77,7 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
             {NAV.map(link => (
               <Link key={link.to} to={link.to}
                 style={{ fontFamily:"'Teko'", fontSize:17, fontWeight:700, letterSpacing:"0.06em", color:isActive(link.to)?"var(--maroon)":"var(--text-dim)", textDecoration:"none", padding:"5px 12px", borderRadius:8, transition:"all 0.2s", background:isActive(link.to)?"rgba(141,16,22,0.1)":"transparent", borderBottom:isActive(link.to)?"2px solid var(--maroon)":"2px solid transparent" }}
-                onMouseEnter={e=>{if(!isActive(link.to)){e.currentTarget.style.color="var(--text)";e.currentTarget.style.background="rgba(255,255,255,0.05)";}}}
+                onMouseEnter={e=>{if(!isActive(link.to)){e.currentTarget.style.color="var(--text)";e.currentTarget.style.background="var(--hover-bg)";}}}
                 onMouseLeave={e=>{if(!isActive(link.to)){e.currentTarget.style.color="var(--text-dim)";e.currentTarget.style.background="transparent";}}}
               >
                 {link.label}
@@ -148,6 +148,20 @@ export default function Header({ searchQuery, onSearchChange, onSeasonSelect, se
               <span style={{ width:5, height:5, borderRadius:"50%", background:"var(--gold)", display:"inline-block" }}/>
               <span style={{ fontFamily:"'Instrument Sans'", fontSize:10, fontWeight:700, color:"var(--text-muted)" }}>{totalEvents}</span>
             </div>
+
+            {/* Theme Toggle Button */}
+            <button onClick={toggleTheme}
+              style={{ width:34, height:34, borderRadius:"50%", border:"1px solid var(--border)", background:"var(--surface-1)", color:"var(--text-muted)", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.2s" }}
+              title={theme === "light" ? "இருண்ட தீம்" : "ஒளி தீம்"}
+              onMouseEnter={e=>{ e.currentTarget.style.color="var(--maroon)"; e.currentTarget.style.borderColor="var(--maroon)"; }}
+              onMouseLeave={e=>{ e.currentTarget.style.color="var(--text-muted)"; e.currentTarget.style.borderColor="var(--border)"; }}
+            >
+              {theme === "light" ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              )}
+            </button>
 
             {/* Hamburger — mobile only */}
             <button onClick={()=>setMobileOpen(!mobileOpen)}
